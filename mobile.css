@@ -1,0 +1,188 @@
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  max-width: 750px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: #333;
+}
+
+
+.advan,
+.home,
+.mask {
+  width: 100%;
+}
+
+.background,
+.outer,
+#game,
+.main {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  border-radius: 0;
+}
+
+.panel-heading {
+  border-radius: 0;
+}
+.panel-close {
+  top: 10px;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+.panel-close::before,
+.panel-close::after {
+  top: 50%;
+  left: 50%;
+  content: '';
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: #fff;
+  position: absolute;
+  transform-origin: center center;
+}
+.panel-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.panel-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.equipMain {
+  float: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 266px);
+  position: absolute;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  transform: translate(100%, 0);
+  transition: transform 0.3s;
+  z-index: 1000000;
+}
+.equipMain.open {
+  transform: translate(0, 0);
+}
+.equipMain > .panel-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px 40px;
+}
+.equipMain > .panel-body > #equip {
+  flex: 1;
+  height: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.equipMain > .panel-body > #equip > .boxList {
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.equipMain > .panel-body > #detail {
+  margin: 0;
+  width: 100%;
+}
+
+.advanMain {
+  float: none;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.advanMain > .panel-body {
+  flex: 1;
+  height: 0;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.stateMain {
+  margin: 0;
+  padding: 12px;
+  float: none;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+.stateMain > .stateMainTop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.stateMain .stateVector {
+  margin: 0;
+}
+.stateMain > .detail {
+  float: none;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.advanOuter {
+  flex: 1;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.detail {
+  padding: 8px 10px;
+}
+.detailHead {
+  margin: 0;
+}
+
+.menuOuter {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, .5);
+  box-sizing: border-box;
+  padding: 12px;
+  padding-top: 120px;
+  display: flex;
+  justify-content: center;
+}
+.menuInner {
+  height: auto;
+}
+.menu {
+  width: 100%;
+}
+
+.skillMenu > .skill {
+  margin: 0;
+  width: calc(50% - 5px);
+  height: 300px;
+  box-shadow: none;
+  border-radius: 0;
+}
+.skillMenu > .skill:first-child {
+  float: left;
+}
+.skillMenu > .skill:last-child {
+  float: right;
+}

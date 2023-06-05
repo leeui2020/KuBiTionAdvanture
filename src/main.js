@@ -241,7 +241,7 @@ var StateVectorComponent = React.createClass({
             }
             return 'rgb(' + r + ',' + g + ',' + b + ')';
         }
-        return  <div className = "stateVector" onMouseEnter = {this.showMsg} style = {{background:getColor.bind(this,Math.ceil(state.amount))()}} >
+        return  <div className = "stateVector" onClick = {this.showMsg} style = {{background:getColor.bind(this,Math.ceil(state.amount))()}} >
                     {stateName}
                     <span className = "badge"> {this.props.state == 'temp'?TEMP_DATA[this.context.getTempDesc()].name:Math.ceil(state.amount)} </span>
                 </div>
@@ -796,7 +796,6 @@ var NormalMenuComponent = React.createClass({
                         </div>
                     </div>
                 )
-                break;
                 case'settings':
                 var settings = this.context.settings;
                 return (
@@ -1013,7 +1012,7 @@ var RegisterComponent = React.createClass({
                 </div>
     }
 });
-var BagComponent = React.createClass({
+var DetailComponent = React.createClass({
     contextTypes:{
         getScienceLevel:React.PropTypes.func.isRequired,
         boxSaveData    :React.PropTypes.object.isRequired,
@@ -1061,7 +1060,7 @@ var BagComponent = React.createClass({
         var detailedItem = this.context.detailedItem;
         this.context.handleItemClick(detailedItem,this.getItemBoxFromDetail());
     },
-    render:function() {
+    render: function() {
         var detailedType = this.context.detailedType;
         var detailedItem = this.context.detailedItem;
         var detailedList = this.context.detailedList;
@@ -1156,21 +1155,45 @@ var BagComponent = React.createClass({
             }
             return false;
         }
+
+        return  <div className = "detail" id = "detail">
+                    {getDetail.bind(this)()}
+                </div>
+    },
+});
+var BagComponent = React.createClass({
+    render:function() {
+        function closeBad() {
+            $('.equipMain').removeClass('open');
+        }
         return  <div className="panel panel-primary equipMain">
                     <div className="panel-heading">
                         背包
+                        <div className="panel-close" onClick={closeBad}></div>
                     </div>
                     <div className="panel-body  clearFix">
                         <div className = "equip" id = "equip">
                             <BoxComponent box = 'bag'/>
                         </div>
-                        <div className = "detail" id = "detail">
-                            {getDetail.bind(this)()}
-                        </div>
-
                     </div>
                 </div>
     }
+});
+var BagBtnComponent = React.createClass({
+    handleClick: function() {
+        $('.equipMain').addClass('open');
+    },
+    render: function() {
+        return (
+            <BtnComponent
+                className = 'stateVector'
+                style = {{backgroundColor:'#9FAA83'}}
+                handleClick = {this.handleClick}
+            >
+                <span>背包</span>
+            </BtnComponent>
+        );
+    },
 });
 var StateComponent = React.createClass({
     render:function(){
@@ -1182,9 +1205,13 @@ var StateComponent = React.createClass({
             return result;
         }
         return  <div className="stateMain">
-                    {getStatesName()}
-                    <MenuBtnComponent />
-                    {MODE=='DEBUG'?<DebugComponent/>:null}
+                    <DetailComponent />
+                    <div className="stateMainTop">
+                        {getStatesName()}
+                        <MenuBtnComponent />
+                        <BagBtnComponent />
+                        {MODE=='DEBUG'?<DebugComponent/>:null}
+                    </div>
                 </div>
     }
 })
