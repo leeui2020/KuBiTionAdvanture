@@ -1181,7 +1181,7 @@ var BagComponent = React.createClass({
 });
 var BagBtnComponent = React.createClass({
     handleClick: function() {
-        $('.equipMain').addClass('open');
+        $('.equipMain').toggleClass('open');
     },
     render: function() {
         return (

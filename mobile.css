@@ -11,6 +11,9 @@ body {
   background-color: #333;
 }
 
+* {
+  border-radius: 0;
+}
 
 .advan,
 .home,
@@ -125,8 +128,9 @@ body {
   border-radius: 0;
 }
 .stateMain > .stateMainTop {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 72px);
+  justify-content: space-between;
   gap: 10px;
 }
 .stateMain .stateVector {
@@ -185,4 +189,53 @@ body {
 }
 .skillMenu > .skill:last-child {
   float: right;
+}
+
+.time {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+.time > .season {
+  margin: 0;
+  margin-right: 4px;
+  font-size: 12px;
+}
+.time > .date {
+  font-size: 12px;
+  margin: 0 2px;
+}
+.time > .weatherBox {
+  width: 14px;
+  height: 14px;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  margin-left: 2px;
+}
+
+.branch {
+  width: 100%;
+  margin: 0;
+}
+.oppo {
+  width: 100%;
+  margin: 0;
+  margin-top: 12px;
+  overflow: auto;
+}
+.advan {
+  max-height: none;
+  overflow: auto;
+}
+
+.tableOuter {
+  margin: 0;
+  max-height: none;
+}
+
+.bigBox {
+  width: 100%;
+}
+
+.resourceName {
+  display: block;
 }
