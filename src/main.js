@@ -3602,9 +3602,10 @@ var HomeComponent = React.createClass({
     handleGoOut:function(){
         this.context.setCurrentScene('branch');
         var settings = this.context.settings;
-        if(settings.autoSave){
-            this.context.upload(true);
-        }
+        this.context.upload(true);
+        // if(settings.autoSave){
+        //     this.context.upload(true);
+        // }
     },
     getOwnAndUnOwnNumber:function(list){
         var countOwn = 0;
@@ -6335,6 +6336,7 @@ var MainComponent = React.createClass({
         if(this.state.saveData==null){
             this.init();
         }
+        this.download(true);
     },
     init:function(){
         var initState = this.getInitialState();
@@ -6429,7 +6431,7 @@ var MainComponent = React.createClass({
         this.setState({boxSaveData:boxSaveData});
     },
     loadData:function (str) {
-        this.setState({currentScene:'branch'});
+        // this.setState({currentScene:'branch'});
         setTimeout(function(){
             this.setState({currentScene:'home'});
             var data = eval('(' + str + ')');
@@ -6437,36 +6439,45 @@ var MainComponent = React.createClass({
             this.loadState(data);
         }.bind(this),100)
     },
-    download:function(){
-        var saveData = (this.state);
-        var save_account = saveData.settings.save_account;
-        var save_pass = saveData.settings.save_pass;
-        var jsonStr = 'action=load&account=' + save_account + '&pass=' + save_pass + '&data=nope';
+    download:function(doNotShow){
         var self = this;
-        var htmlobj = $.ajax({
-            contentType:"application/x-www-form-urlencoded",
-            type:'POST',
-            url:SAVE_URL,
-            async:true,
-            data:jsonStr,
-            success:function(){
-                if(htmlobj.responseText=='no account'){
-                    alert("没有这个账号...");
-                    return;
-                }
-                if(htmlobj.responseText=='incorrect pass'){
-                    alert("密码错误...");
-                    return;
-                }
-                if(htmlobj.responseText=='invalid'){
-                    alert("账号、密码必须是3-12位的数字以及字母的组合...");
-                    return;
-                }
-                    lll(htmlobj.responseText);
-                    alert("读取成功！");
-                    self.setState({saveData:htmlobj.responseText});
-                    self.loadData(htmlobj.responseText);
-        }});
+        try {
+            var saveData = decodeURI(localStorage.getItem('saveData'));
+            if (saveData) {
+                if (!doNotShow) alert("读取成功！");
+                self.setState({saveData:saveData});
+                self.loadData(saveData);
+            }
+        } catch (e) {};
+        // var saveData = (this.state);
+        // var save_account = saveData.settings.save_account;
+        // var save_pass = saveData.settings.save_pass;
+        // var jsonStr = 'action=load&account=' + save_account + '&pass=' + save_pass + '&data=nope';
+        // var self = this;
+        // var htmlobj = $.ajax({
+        //     contentType:"application/x-www-form-urlencoded",
+        //     type:'POST',
+        //     url:SAVE_URL,
+        //     async:true,
+        //     data:jsonStr,
+        //     success:function(){
+        //         if(htmlobj.responseText=='no account'){
+        //             alert("没有这个账号...");
+        //             return;
+        //         }
+        //         if(htmlobj.responseText=='incorrect pass'){
+        //             alert("密码错误...");
+        //             return;
+        //         }
+        //         if(htmlobj.responseText=='invalid'){
+        //             alert("账号、密码必须是3-12位的数字以及字母的组合...");
+        //             return;
+        //         }
+        //             lll(htmlobj.responseText);
+        //             alert("读取成功！");
+        //             self.setState({saveData:htmlobj.responseText});
+        //             self.loadData(htmlobj.responseText);
+        // }});
     },
     upload:function(doNotShow){
         var saveData = clone(this.state);
@@ -6474,39 +6485,42 @@ var MainComponent = React.createClass({
         var save_pass = saveData.settings.save_pass;
         var day = saveData.time.day;
         var g = saveData.generation;
-        if(save_account == null||save_account == ''){
-            alert('不输入账号怎么保存啊。。。');
-            return;
-        }
-        if(save_pass == null||save_pass == ''){
-            alert('不输入密码怎么保存啊。。。');
-            return;
-        }
+        // if(save_account == null||save_account == ''){
+        //     alert('不输入账号怎么保存啊。。。');
+        //     return;
+        // }
+        // if(save_pass == null||save_pass == ''){
+        //     alert('不输入密码怎么保存啊。。。');
+        //     return;
+        // }
         delete saveData.settings;
         delete saveData.saveData;
         delete saveData.wind;
         delete saveData.detailedItem;
         delete saveData.detailedList;
         delete saveData.detailedType;
-        var jsonStr = 'action=save&account=' + save_account + '&pass=' + save_pass + '&data=' + encodeURI(JSON.stringify(saveData)) + '&day=' + day + '&g=' + g;
-        var htmlobj = $.ajax({
-            contentType:"application/x-www-form-urlencoded",
-            type:'POST',
-            url:SAVE_URL,
-            async:true,
-            data:jsonStr,
-            success:function(){
-                if(htmlobj.responseText=='incorrect pass'){
-                    alert("密码错误...");
-                    return;
-                }
-                if(htmlobj.responseText=='invalid'){
-                    alert("账号、密码必须是3-12位的数字以及字母的组合...");
-                    return;
-                }
-                if(!doNotShow)alert("保存成功！");
-                    // self.setState({saveData:decodeURI(encodeURI(JSON.stringify(saveData)))});
-        }});
+
+        localStorage.setItem('saveData', encodeURI(JSON.stringify(saveData)));
+        if(!doNotShow)alert("保存成功！");
+        // var jsonStr = 'action=save&account=' + save_account + '&pass=' + save_pass + '&data=' + encodeURI(JSON.stringify(saveData)) + '&day=' + day + '&g=' + g;
+        // var htmlobj = $.ajax({
+        //     contentType:"application/x-www-form-urlencoded",
+        //     type:'POST',
+        //     url:SAVE_URL,
+        //     async:true,
+        //     data:jsonStr,
+        //     success:function(){
+        //         if(htmlobj.responseText=='incorrect pass'){
+        //             alert("密码错误...");
+        //             return;
+        //         }
+        //         if(htmlobj.responseText=='invalid'){
+        //             alert("账号、密码必须是3-12位的数字以及字母的组合...");
+        //             return;
+        //         }
+        //         if(!doNotShow)alert("保存成功！");
+        //             // self.setState({saveData:decodeURI(encodeURI(JSON.stringify(saveData)))});
+        // }});
     },
 });
 function render(){
