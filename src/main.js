@@ -693,7 +693,6 @@ var NormalMenuComponent = React.createClass({
         this.context.setStateFromChildren({settings:settings});
     },
     handleAuto:function(){
-        var value =  ($('#autoSave')[0].value);
         var settings = this.context.settings;
         settings['autoSave'] = !settings['autoSave'];
         this.context.setStateFromChildren({settings:settings});
@@ -800,7 +799,7 @@ var NormalMenuComponent = React.createClass({
                 var settings = this.context.settings;
                 return (
                     <div className = 'skillMenu'>
-                        <div style = {{marginTop:10}}>
+                        {/* <div style = {{marginTop:10}}>
                             <div>
                                 <label htmlFor="account">账号</label>
                                 <input onChange = {this.handleChange.bind(this,'account')} type="text" className = "form-control" id="account" value = {settings.save_account}></input>
@@ -814,15 +813,18 @@ var NormalMenuComponent = React.createClass({
                                 <BtnComponent disabled = {this.context.currentScene != 'home' || (getLength(this.context.mstState) != 0)||(this.context.robberSaveData.robber)} handleClick = {this.willUpload}>保存</BtnComponent>
                                 <BtnComponent handleClick = {this.download}>读取</BtnComponent>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <label className = "checkbox" htmlFor="autoSave">
+                        {/* <label className = "checkbox" htmlFor="autoSave">
                             <input checked = {this.context.settings.autoSave} onChange = {this.handleAuto} id="autoSave" type="checkbox" />
                             <span>出门时保存</span>
-                        </label>
-                        <BtnComponent handleClick = {this.context.setVolume}>声音：{this.context.AudioEngine.on?'开':'关'}</BtnComponent>
-                        <BtnComponent handleClick = {this.setSort}>自动整理背包：{this.context.settings.sort?'开':'关'}</BtnComponent>
-                        <div><a target="blank" href = "http://1.maou.sinaapp.com/?page_id=47">作者的小站</a></div>
+                        </label> */}
+                        <div className="setting-menu">
+                            {/* <BtnComponent handleClick={this.handleAuto}>出门时保存：{this.context.settings.autoSave?'开':'关'}</BtnComponent> */}
+                            <BtnComponent handleClick={this.context.setVolume}>声音：{this.context.AudioEngine.on?'开':'关'}</BtnComponent>
+                            <BtnComponent handleClick={this.setSort}>自动整理背包：{this.context.settings.sort?'开':'关'}</BtnComponent>
+                            <div><a target="blank" href = "http://1.maou.sinaapp.com/?page_id=47">作者的小站</a></div>
+                        </div>
                     </div>
                 )
             }
@@ -3608,7 +3610,7 @@ var HomeComponent = React.createClass({
     handleGoOut:function(){
         this.context.setCurrentScene('branch');
         var settings = this.context.settings;
-        this.context.upload(true);
+        // this.context.upload(true);
         // if(settings.autoSave){
         //     this.context.upload(true);
         // }
@@ -5297,6 +5299,9 @@ var MainComponent = React.createClass({
             getMaxState         : this.getMaxState,
         };
     },
+    componentDidUpdate: $.debounce(function() {
+        this.upload(true);
+    }),
     reBorn:function(skill){
         var skillNow = clone(this.state.skill);
         for(var attr in skillNow){
@@ -6430,7 +6435,7 @@ var MainComponent = React.createClass({
         }
         this.setState(data);
         this.setState({showMenu:''});
-        this.setState({currentScene:'home'});
+        // this.setState({currentScene:'home'});
         var level = this.getScienceLevel('bagSizeBonus');
         var boxSaveData = this.state.boxSaveData;
         boxSaveData['bag'].size = BAG_BASE_SIZE + level;
@@ -6455,51 +6460,14 @@ var MainComponent = React.createClass({
                 self.loadData(saveData);
             }
         } catch (e) {};
-        // var saveData = (this.state);
-        // var save_account = saveData.settings.save_account;
-        // var save_pass = saveData.settings.save_pass;
-        // var jsonStr = 'action=load&account=' + save_account + '&pass=' + save_pass + '&data=nope';
-        // var self = this;
-        // var htmlobj = $.ajax({
-        //     contentType:"application/x-www-form-urlencoded",
-        //     type:'POST',
-        //     url:SAVE_URL,
-        //     async:true,
-        //     data:jsonStr,
-        //     success:function(){
-        //         if(htmlobj.responseText=='no account'){
-        //             alert("没有这个账号...");
-        //             return;
-        //         }
-        //         if(htmlobj.responseText=='incorrect pass'){
-        //             alert("密码错误...");
-        //             return;
-        //         }
-        //         if(htmlobj.responseText=='invalid'){
-        //             alert("账号、密码必须是3-12位的数字以及字母的组合...");
-        //             return;
-        //         }
-        //             lll(htmlobj.responseText);
-        //             alert("读取成功！");
-        //             self.setState({saveData:htmlobj.responseText});
-        //             self.loadData(htmlobj.responseText);
-        // }});
     },
     upload:function(doNotShow){
+        if (!this.checkCanUpload()) {
+            return;
+        }
+
         var saveData = clone(this.state);
-        var save_account = saveData.settings.save_account;
-        var save_pass = saveData.settings.save_pass;
-        var day = saveData.time.day;
-        var g = saveData.generation;
-        // if(save_account == null||save_account == ''){
-        //     alert('不输入账号怎么保存啊。。。');
-        //     return;
-        // }
-        // if(save_pass == null||save_pass == ''){
-        //     alert('不输入密码怎么保存啊。。。');
-        //     return;
-        // }
-        delete saveData.settings;
+        // delete saveData.settings;
         delete saveData.saveData;
         delete saveData.wind;
         delete saveData.detailedItem;
@@ -6508,25 +6476,13 @@ var MainComponent = React.createClass({
 
         localStorage.setItem('saveData', encodeURI(JSON.stringify(saveData)));
         if(!doNotShow)alert("保存成功！");
-        // var jsonStr = 'action=save&account=' + save_account + '&pass=' + save_pass + '&data=' + encodeURI(JSON.stringify(saveData)) + '&day=' + day + '&g=' + g;
-        // var htmlobj = $.ajax({
-        //     contentType:"application/x-www-form-urlencoded",
-        //     type:'POST',
-        //     url:SAVE_URL,
-        //     async:true,
-        //     data:jsonStr,
-        //     success:function(){
-        //         if(htmlobj.responseText=='incorrect pass'){
-        //             alert("密码错误...");
-        //             return;
-        //         }
-        //         if(htmlobj.responseText=='invalid'){
-        //             alert("账号、密码必须是3-12位的数字以及字母的组合...");
-        //             return;
-        //         }
-        //         if(!doNotShow)alert("保存成功！");
-        //             // self.setState({saveData:decodeURI(encodeURI(JSON.stringify(saveData)))});
-        // }});
+    },
+    checkCanUpload:function() {
+        // 战斗中不能保存
+        if (getLength(this.state.mstState) != 0) return false;
+        // 危险状态不能保存
+        if (this.state.robberSaveData.robber) return false;
+        return true;
     },
 });
 function render(){

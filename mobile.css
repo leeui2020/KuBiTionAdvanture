@@ -276,3 +276,16 @@ body.split-bad .advanMain > .panel-body {
 .resourceName {
   display: block;
 }
+
+.setting-menu {
+  padding: 24px;
+}
+.setting-menu > .btn {
+  width: 140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+.setting-menu > *:not(:last-child) {
+  margin-bottom: 8px;
+}
