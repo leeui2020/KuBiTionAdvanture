@@ -1166,7 +1166,7 @@ var BagComponent = React.createClass({
         $(this.getDOMNode()).removeClass('open');
     },
     toggleSplit: function() {
-        $(this.getDOMNode()).toggleClass('split');
+        $(document.body).toggleClass('split-bad');
     },
     render:function() {
         return  <div className="panel panel-primary equipMain">

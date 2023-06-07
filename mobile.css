@@ -83,10 +83,10 @@ body {
   transform: translate(calc(-50% + 3px), -50%) rotate(-45deg);
 }
 
-.panel.split > .panel-heading .panel-split::before {
+body.split-bad .equipMain > .panel-heading .panel-split::before {
   transform: translate(calc(-50% + 3px), -50%) rotate(45deg);
 }
-.panel.split > .panel-heading .panel-split::after {
+body.split-bad .equipMain > .panel-heading .panel-split::after {
   transform: translate(calc(-50% - 3px), -50%) rotate(-45deg);
 }
 
@@ -130,10 +130,13 @@ body {
   margin: 0;
   width: 100%;
 }
-.equipMain.split {
+body.split-bad .equipMain {
   top: auto;
   bottom: 266px;
   height: 180px;
+}
+body.split-bad .advanMain > .panel-body {
+  padding-bottom: 180px;
 }
 
 .advanMain {
