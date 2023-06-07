@@ -1162,14 +1162,20 @@ var DetailComponent = React.createClass({
     },
 });
 var BagComponent = React.createClass({
+    closeBad: function() {
+        $(this.getDOMNode()).removeClass('open');
+    },
+    toggleSplit: function() {
+        $(this.getDOMNode()).toggleClass('split');
+    },
     render:function() {
-        function closeBad() {
-            $('.equipMain').removeClass('open');
-        }
         return  <div className="panel panel-primary equipMain">
                     <div className="panel-heading">
                         背包
-                        <div className="panel-close" onClick={closeBad}></div>
+                        <div className="panel-heading-right">
+                            <div className="panel-split" onClick={this.toggleSplit}></div>
+                            <div className="panel-close" onClick={this.closeBad}></div>
+                        </div>
                     </div>
                     <div className="panel-body  clearFix">
                         <div className = "equip" id = "equip">

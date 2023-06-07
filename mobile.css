@@ -35,13 +35,26 @@ body {
 .panel-heading {
   border-radius: 0;
 }
-.panel-close {
+.panel-heading-right {
   top: 10px;
   right: 15px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+.panel-heading-right > *:not(:last-child) {
+  margin-right: 8px;
+}
+
+.panel-split,
+.panel-close {
   width: 20px;
   height: 20px;
-  position: absolute;
+  position: relative;
 }
+
+.panel-split::before,
+.panel-split::after,
 .panel-close::before,
 .panel-close::after {
   top: 50%;
@@ -59,6 +72,22 @@ body {
 }
 .panel-close::after {
   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.panel-split::before {
+  width: 10px;
+  transform: translate(calc(-50% - 3px), -50%) rotate(45deg);
+}
+.panel-split::after {
+  width: 10px;
+  transform: translate(calc(-50% + 3px), -50%) rotate(-45deg);
+}
+
+.panel.split > .panel-heading .panel-split::before {
+  transform: translate(calc(-50% + 3px), -50%) rotate(45deg);
+}
+.panel.split > .panel-heading .panel-split::after {
+  transform: translate(calc(-50% - 3px), -50%) rotate(-45deg);
 }
 
 .equipMain {
@@ -100,6 +129,11 @@ body {
 .equipMain > .panel-body > #detail {
   margin: 0;
   width: 100%;
+}
+.equipMain.split {
+  top: auto;
+  bottom: 266px;
+  height: 180px;
 }
 
 .advanMain {
